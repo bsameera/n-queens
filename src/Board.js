@@ -134,21 +134,26 @@
       var counter = 0;
       var col = majorDiagonalColumnIndexAtFirstRow;
       for (var i = 0; i < this.rows().length; i++) {
-        if (this.get(i)[col + i] === 1) {
+        if (this.get(i) !== undefined && this.get(i)[col + i] === 1) {
           counter++;
         }
       }
       for (var j = 0; j < this.rows().length; j++) {
-        if (this.get(col + j)[j] === 1) {
+        if (this.get(col + j) !== undefined && this.get(col + j)[j] === 1) {
           counter++;
         }
       }
-      return counter > 1;
+      return col === 0 ? (counter - 1) > 1 : (counter > 1);
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
