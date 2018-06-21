@@ -18,6 +18,19 @@
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
 
+  var matrix = [];
+  for (var i = 0; i < n; i++) {
+    var innerArr = Array(n).fill(0, 0);
+    matrix.push(innerArr);
+  }
+  var board = new Board(matrix);
+
+  //create a nested for loop,to loop through the matrix 
+  for (var row = 0; row < n; row++) {
+    board.togglePiece(row, row);
+  }
+  
+  solution = board.rows();
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
