@@ -1,4 +1,4 @@
-// This file is a Backbone Model (don't worry about what that means)
+ // This file is a Backbone Model (don't worry about what that means)
 // It's part of the Board Visualizer
 // The only portions you need to work on are the helper functions (below)
 
@@ -136,14 +136,22 @@
       for (var i = 0; i < this.rows().length; i++) {
         if (this.get(i) !== undefined && this.get(i)[col + i] === 1) {
           counter++;
+          if (counter > 1) {
+            return true;
+          }
         }
       }
+      counter = 0;
       for (var j = 0; j < this.rows().length; j++) {
         if (this.get(col + j) !== undefined && this.get(col + j)[j] === 1) {
           counter++;
+          if (counter > 1) {
+            return true;
+          }
         }
       }
-      return col === 0 ? (counter - 1) > 1 : (counter > 1);
+      //return col === 0 ? (counter - 1) > 1 : (counter > 1);
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
@@ -169,23 +177,28 @@
         if (col - i >= 0) {
           if (this.get(i) !== undefined && this.get(i)[col - i] === 1) {
             counter++;
+            if (counter > 1) {
+              return true;
+            }
           }
         }
       }
-    //   var x = this.rows().length - col;
-
-    //   for (var j = 0; j < this.rows().length; j++) {
-    //     if (col - j >= 0) {
-    //       if (this.get(j) !== undefined && this.get(j - diff)[j + diff] === 1) {
-    //         counter++;
-    //       }
-    //     }
-    //   }
-    //   return (col === this.rows().length - 1) ? (counter - 1) > 1 : (counter > 1);
+      counter = 0;
+      var maxInd = this.rows().length - 1;
+      for (var j = 0; j < this.rows().length; j++) {
+        if (col - j >= 0) {
+          if (this.get(j + Math.abs(col - maxInd)) !== undefined && this.get(j + Math.abs(col - maxInd))[maxInd - j] === 1) {
+            counter++;
+            if (counter > 1) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+      // return (col === this.rows().length - 1) ? (counter - 1) > 1 : (counter > 1);
     },
-    // for ('hi') {
-      
-    // }
+
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
