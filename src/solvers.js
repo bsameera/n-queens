@@ -31,13 +31,31 @@ window.findNRooksSolution = function(n) {
   }
   
   solution = board.rows();
+  
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0; 
+  // create a board with the matrix
+  var board = new Board({n});
+
+  var recurse = function (rowIndex) {
+    if (rowIndex + 1 === n) {
+      solutionCount++;
+      return;
+    }
+    for (var col = 0; col < n; col++) {
+      board.togglePiece(rowIndex, col);
+      if (!board.hasAnyRooksConflicts()) {
+        recurse(rowIndex + 1);
+      }
+      board.togglePiece(rowIndex, col);
+    }
+  };
+  recurse(0);
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
